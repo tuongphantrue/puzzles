@@ -1,6 +1,9 @@
 HTML5 Puzzles
 =============
 
+> This code hasn't been updated since 2013.<br>
+> **The replacement project is [medmunds/puzzles-web](https://github.com/medmunds/puzzles-web).**
+
 ### ▶ [Play the puzzles][play] in your browser
 
 -----
