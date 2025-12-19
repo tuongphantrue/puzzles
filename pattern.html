@@ -17,6 +17,13 @@
         <h1>pattern</h1>
         <span class="subtitle">from Simon Tatham's portable puzzle collection</span>
     </header>
+    <div id="new-version" class="alert alert-block alert-info" style="display: none;">
+        <button type="button" class="close">&times;</button>
+        <h4 style="margin-bottom: 10px;">Updated site available</h4>
+        <p>More puzzles, better features, still completely free!<br>
+            Try the new version:
+            <a href="https://puzzles.twistymaze.com"><strong>puzzles.twistymaze.com</strong></a>.</p>
+    </div>
 
     <!--[if lt IE 9]>
     <div class="alert alert-block alert-warning">
@@ -117,6 +124,19 @@
 <!--[if gte IE 9]><!-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 <!--<![endif]-->
+<script>
+    jQuery(function($) {
+        var isCompatible = window.CSS && CSS.supports("selector(& .foo)")
+            && typeof Array.prototype.at === "function";
+        if (isCompatible) {
+            var $banner = $('#new-version');
+            $banner.find('.close').on('click', function() {
+                $banner.hide();
+            });
+            $banner.show();
+        }
+    });
+</script>
 <script>
     jQuery('noscript').hide(); // IE8
     Module = {};
