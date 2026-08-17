@@ -1,4 +1,4 @@
-name: Deploy Puzzles Without External Redirects
+name: Deploy Original Puzzles To My GitHub Pages
 
 on:
   workflow_dispatch:
@@ -10,12 +10,11 @@ on:
 
 permissions:
   contents: read
-  actions: read
   pages: write
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -23,136 +22,74 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get playable gh-pages site
+      - name: Download full upstream gh-pages history
         uses: actions/checkout@v4
         with:
+          repository: medmunds/puzzles
           ref: gh-pages
+          fetch-depth: 0
           path: site
 
-      - name: Remove TwistyMaze redirects
+      - name: Find last playable version before TwistyMaze redirects
         shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
+          set -euo pipefail
+          cd site
 
-          root = Path("site")
-          changed = []
+          CLEAN_COMMIT=""
 
-          for path in root.rglob("*"):
-              if not path.is_file():
-                  continue
+          # Start from newest and walk backwards until we find a version
+          # whose HTML/JS contains no puzzles.twistymaze.com references.
+          while IFS= read -r commit; do
+            if git grep -I -q \
+              -e 'puzzles\.twistymaze\.com' \
+              "$commit" -- '*.html' '*.htm' '*.js' 2>/dev/null; then
+              continue
+            fi
 
-              if path.suffix.lower() not in {".html", ".htm", ".js"}:
-                  continue
+            CLEAN_COMMIT="$commit"
+            break
+          done < <(git rev-list HEAD)
 
-              raw = path.read_bytes()
+          if [ -z "$CLEAN_COMMIT" ]; then
+            echo "Could not find a pre-TwistyMaze version."
+            exit 1
+          fi
 
-              try:
-                  text = raw.decode("utf-8")
-                  encoding = "utf-8"
-              except UnicodeDecodeError:
-                  text = raw.decode("latin-1")
-                  encoding = "latin-1"
+          echo "Using clean historical commit: $CLEAN_COMMIT"
 
-              old = text
+          # Checkout the original, already-built static puzzle site exactly
+          # as it existed before the migration redirects were added.
+          git checkout --detach "$CLEAN_COMMIT"
 
-              if path.suffix.lower() in {".html", ".htm"}:
-                  # Remove inline redirect scripts that mention TwistyMaze.
-                  text = re.sub(
-                      r"<script\b[^>]*>.*?puzzles\.twistymaze\.com.*?</script\s*>",
-                      "",
-                      text,
-                      flags=re.IGNORECASE | re.DOTALL,
-                  )
+          # Remove Git metadata from the Pages artifact.
+          rm -rf .git
 
-                  # Remove meta-refresh redirects to TwistyMaze.
-                  text = re.sub(
-                      r"<meta\b(?=[^>]*puzzles\.twistymaze\.com)[^>]*>",
-                      "",
-                      text,
-                      flags=re.IGNORECASE | re.DOTALL,
-                  )
+          # Do not let Jekyll transform this already-built static site.
+          touch .nojekyll
 
-                  # Disable ordinary links to the replacement site.
-                  text = re.sub(
-                      r"(\bhref\s*=\s*[\"'])https?://puzzles\.twistymaze\.com[^\"']*([\"'])",
-                      r"\1#\2",
-                      text,
-                      flags=re.IGNORECASE,
-                  )
-
-              if path.suffix.lower() == ".js":
-                  # Neutralize one-line JS redirect statements that directly
-                  # contain the replacement-site hostname.
-                  lines = []
-                  for line in text.splitlines(keepends=True):
-                      low = line.lower()
-                      if (
-                          "puzzles.twistymaze.com" in low
-                          and any(word in low for word in (
-                              "location", "redirect", "replace(", "assign(",
-                              "settimeout", "window.open"
-                          ))
-                      ):
-                          newline = "\n" if line.endswith("\n") else ""
-                          lines.append("// TwistyMaze redirect removed by GitHub Pages workflow" + newline)
-                      else:
-                          lines.append(line)
-                  text = "".join(lines)
-
-              # Safety net: any remaining full TwistyMaze URL becomes "#".
-              text = re.sub(
-                  r"https?://puzzles\.twistymaze\.com(?:/[A-Za-z0-9_./?=&%#:+~-]*)?",
-                  "#",
-                  text,
-                  flags=re.IGNORECASE,
-              )
-
-              if text != old:
-                  path.write_bytes(text.encode(encoding))
-                  changed.append(str(path))
-
-          print("Patched files:")
-          for name in changed:
-              print(" -", name)
-
-          leftovers = []
-          for path in root.rglob("*"):
-              if not path.is_file() or path.suffix.lower() not in {".html", ".htm", ".js"}:
-                  continue
-              try:
-                  text = path.read_text(encoding="utf-8")
-              except UnicodeDecodeError:
-                  text = path.read_text(encoding="latin-1")
-              if "puzzles.twistymaze.com" in text.lower():
-                  leftovers.append(str(path))
-
-          if leftovers:
-              print("\nRemaining textual TwistyMaze references:")
-              for name in leftovers:
-                  print(" -", name)
-          else:
-              print("\nNo TwistyMaze hostname references remain.")
-
-          (root / ".nojekyll").touch()
-          PY
+          # Add a simple deployment marker for troubleshooting.
+          printf '%s\n' \
+            "Hosted by tuongphantrue.github.io/puzzles/" \
+            "Historical source commit: $CLEAN_COMMIT" \
+            "TwistyMaze migration redirects: not present" \
+            > _local-build.txt
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
 
-      - name: Upload cleaned site
+      - name: Upload static puzzle site
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./site
 
   deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    needs: build
 
     steps:
       - name: Deploy to GitHub Pages
