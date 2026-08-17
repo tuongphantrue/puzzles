@@ -1,4 +1,4 @@
-name: Deploy Puzzles Locally
+name: Deploy Puzzles Without External Redirects
 
 on:
   workflow_dispatch:
@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -22,13 +23,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get original playable site
+      - name: Get playable gh-pages site
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: site
 
-      - name: Disable external TwistyMaze redirects
+      - name: Remove TwistyMaze redirects
         shell: bash
         run: |
           python3 - <<'PY'
@@ -38,32 +39,101 @@ jobs:
           root = Path("site")
           changed = []
 
-          # IMPORTANT:
-          # Do not remove <script> blocks. Some puzzle startup code lives in
-          # the same areas of the page. We only replace external TwistyMaze
-          # URLs with "#", leaving all original puzzle JavaScript intact.
-          pattern = re.compile(
-              rb'https?://puzzles\.twistymaze\.com'
-              rb'(?:/[A-Za-z0-9_./?=&%#:+~-]*)?',
-              re.IGNORECASE
-          )
-
           for path in root.rglob("*"):
               if not path.is_file():
                   continue
-              if path.suffix.lower() not in {".html", ".htm", ".js", ".css"}:
+
+              if path.suffix.lower() not in {".html", ".htm", ".js"}:
                   continue
 
-              data = path.read_bytes()
-              new_data = pattern.sub(b"#", data)
+              raw = path.read_bytes()
 
-              if new_data != data:
-                  path.write_bytes(new_data)
+              try:
+                  text = raw.decode("utf-8")
+                  encoding = "utf-8"
+              except UnicodeDecodeError:
+                  text = raw.decode("latin-1")
+                  encoding = "latin-1"
+
+              old = text
+
+              if path.suffix.lower() in {".html", ".htm"}:
+                  # Remove inline redirect scripts that mention TwistyMaze.
+                  text = re.sub(
+                      r"<script\b[^>]*>.*?puzzles\.twistymaze\.com.*?</script\s*>",
+                      "",
+                      text,
+                      flags=re.IGNORECASE | re.DOTALL,
+                  )
+
+                  # Remove meta-refresh redirects to TwistyMaze.
+                  text = re.sub(
+                      r"<meta\b(?=[^>]*puzzles\.twistymaze\.com)[^>]*>",
+                      "",
+                      text,
+                      flags=re.IGNORECASE | re.DOTALL,
+                  )
+
+                  # Disable ordinary links to the replacement site.
+                  text = re.sub(
+                      r"(\bhref\s*=\s*[\"'])https?://puzzles\.twistymaze\.com[^\"']*([\"'])",
+                      r"\1#\2",
+                      text,
+                      flags=re.IGNORECASE,
+                  )
+
+              if path.suffix.lower() == ".js":
+                  # Neutralize one-line JS redirect statements that directly
+                  # contain the replacement-site hostname.
+                  lines = []
+                  for line in text.splitlines(keepends=True):
+                      low = line.lower()
+                      if (
+                          "puzzles.twistymaze.com" in low
+                          and any(word in low for word in (
+                              "location", "redirect", "replace(", "assign(",
+                              "settimeout", "window.open"
+                          ))
+                      ):
+                          newline = "\n" if line.endswith("\n") else ""
+                          lines.append("// TwistyMaze redirect removed by GitHub Pages workflow" + newline)
+                      else:
+                          lines.append(line)
+                  text = "".join(lines)
+
+              # Safety net: any remaining full TwistyMaze URL becomes "#".
+              text = re.sub(
+                  r"https?://puzzles\.twistymaze\.com(?:/[A-Za-z0-9_./?=&%#:+~-]*)?",
+                  "#",
+                  text,
+                  flags=re.IGNORECASE,
+              )
+
+              if text != old:
+                  path.write_bytes(text.encode(encoding))
                   changed.append(str(path))
 
-          print("Files with TwistyMaze URLs disabled:")
+          print("Patched files:")
           for name in changed:
               print(" -", name)
+
+          leftovers = []
+          for path in root.rglob("*"):
+              if not path.is_file() or path.suffix.lower() not in {".html", ".htm", ".js"}:
+                  continue
+              try:
+                  text = path.read_text(encoding="utf-8")
+              except UnicodeDecodeError:
+                  text = path.read_text(encoding="latin-1")
+              if "puzzles.twistymaze.com" in text.lower():
+                  leftovers.append(str(path))
+
+          if leftovers:
+              print("\nRemaining textual TwistyMaze references:")
+              for name in leftovers:
+                  print(" -", name)
+          else:
+              print("\nNo TwistyMaze hostname references remain.")
 
           (root / ".nojekyll").touch()
           PY
@@ -71,7 +141,7 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
 
-      - name: Upload site
+      - name: Upload cleaned site
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./site
@@ -85,6 +155,6 @@ jobs:
     needs: build
 
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
