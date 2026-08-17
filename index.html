@@ -1,207 +1,206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Puzzles</title>
-    <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
-    <script>
-        // <template> is added to html5shiv post-3.6.2...
-        window.html5.elements += ' template';
-        html5.shivDocument(document);
-    </script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/puzzles.css" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puzzles</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #fffaf0;
+  color: #222;
+  margin: 0;
+  padding: 18px;
+}
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+}
+h1 {
+  margin: 0 0 6px 0;
+  font-size: 34px;
+}
+.note {
+  margin: 0 0 18px 0;
+  padding: 10px;
+  border: 1px solid #999;
+  background: #fff;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+td {
+  padding: 10px 6px;
+  border-bottom: 1px solid #ccc;
+  vertical-align: top;
+}
+td.game {
+  width: 145px;
+  font-weight: bold;
+  font-size: 18px;
+}
+a {
+  color: #0000cc;
+  text-decoration: underline;
+}
+</style>
 </head>
-<body class="index">
-<div class="container">
+<body>
+<div class="wrap">
+  <h1>Puzzles</h1>
+  <p>Simon Tatham's portable puzzle collection</p>
 
-    <header>
-        <h1>Puzzles</h1>
-        <span class="subtitle">from Simon Tatham's portable puzzle collection</span>
-    </header>
-    <div id="new-version" class="alert alert-block alert-info" style="display: none;">
-        <button type="button" class="close">&times;</button>
-        <h4 style="margin-bottom: 10px;">Updated site available</h4>
-        <p>More puzzles, better features, still completely free!<br>
-            Try the new version:
-            <a href="https://puzzles.twistymaze.com"><strong>puzzles.twistymaze.com</strong></a>.</p>
-    </div>
+  <div class="note">
+    All game links below are local to this GitHub Pages site.
+  </div>
 
-    <section>
-        <p>Play in any <abbr title="IE8+, iOS 5+, Android 2.3+, Chrome, Firefox, Safari, others?">(semi-)modern</abbr>
-            web browser (even tablets and phones&mdash;no plugins required)</p>
-    </section>
-
-    <!--[if lt IE 9]>
-    <div class="alert alert-block alert-warning">
-        <h4>Note:</h4>
-        The puzzles may be quite slow to load in this version of Internet Explorer.
-        For a more enjoyable game, please consider upgrading to IE9 or later,
-        or switching to a browser like Chrome or Firefox.
-    </div>
-    <![endif]-->
-    <noscript>These puzzles are interactive games implemented in JavaScript.
-        To play them, you will need to enable JavaScript in your browser.</noscript>
-
-    <div id="puzzle_list"></div>
-
-    <section>
-        <h3>About this collection</h3>
-        <p>This is Mike Edmunds' <strong>incomplete</strong>
-            HTML5 adaptation of Simon Tatham's
-            <a href="https://www.chiark.greenend.org.uk/~sgtatham/puzzles/">portable puzzles
-              collection</a>. <strong>It hasn't been updated since 2013.</strong></p>
-        <p>The original collection includes
-            <a href="https://www.chiark.greenend.org.uk/~sgtatham/puzzles/doc/">full rules</a>
-            and documentation for playing the puzzles.</p>
-        <p>My intent with this adaptation is to make the puzzles playable on tablets, phones,
-            and anywhere else you find a reasonable web browser.
-            (Though on slower devices, some puzzles may take a very long time to generate
-            new games at the more-complex levels.)
-            You can report any problems in this project's
-            <a href="https://github.com/medmunds/puzzles/issues">issue tracker</a>.</p>
-        <p>The <a href="https://github.com/medmunds/puzzles">source code</a> for this project
-            is on GitHub. Both the original puzzles and this HTML5 adaptation are released
-            under the MIT License. See the LICENSE file in the source for more details.</p>
-    </section>
+  <table>
+      <tr>
+        <td class="game"><a href="blackbox.html">Blackbox</a></td>
+        <td>Find the hidden balls by bouncing laser beams.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="bridges.html">Bridges</a></td>
+        <td>Connect all islands with bridges.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="cube.html">Cube</a></td>
+        <td>Roll the cube to collect all marked squares.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="dominosa.html">Dominosa</a></td>
+        <td>Tile the board with dominoes.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="fifteen.html">Fifteen</a></td>
+        <td>Slide the tiles into numerical order.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="filling.html">Filling</a></td>
+        <td>Mark regions with their correct areas.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="flip.html">Flip</a></td>
+        <td>Flip groups of squares until all are lit.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="galaxies.html">Galaxies</a></td>
+        <td>Divide the grid into symmetric regions.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="guess.html">Guess</a></td>
+        <td>Guess the hidden combination.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="inertia.html">Inertia</a></td>
+        <td>Collect gems while avoiding mines.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="keen.html">Keen</a></td>
+        <td>Complete the arithmetic Latin square.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="lightup.html">Light Up</a></td>
+        <td>Place bulbs to illuminate the grid.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="loopy.html">Loopy</a></td>
+        <td>Draw one closed loop from the clues.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="magnets.html">Magnets</a></td>
+        <td>Place magnets to satisfy the clues.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="map.html">Map</a></td>
+        <td>Color the map so neighbors differ.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="mines.html">Mines</a></td>
+        <td>Find all mines without stepping on one.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="net.html">Net</a></td>
+        <td>Rotate tiles to reconnect the network.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="netslide.html">Netslide</a></td>
+        <td>Slide rows to rebuild the network.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="pattern.html">Pattern</a></td>
+        <td>Fill a nonogram-style pattern.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="pearl.html">Pearl</a></td>
+        <td>Draw a loop through pearl clues.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="pegs.html">Pegs</a></td>
+        <td>Jump pegs until only one remains.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="range.html">Range</a></td>
+        <td>Place black squares using visibility clues.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="rect.html">Rectangles</a></td>
+        <td>Divide the grid into numbered rectangles.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="samegame.html">Same Game</a></td>
+        <td>Remove connected groups of matching squares.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="signpost.html">Signpost</a></td>
+        <td>Connect numbered squares following arrows.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="singles.html">Singles</a></td>
+        <td>Black out duplicate numbers correctly.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="sixteen.html">Sixteen</a></td>
+        <td>Slide rows and columns to order the tiles.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="slant.html">Slant</a></td>
+        <td>Draw slanting lines to satisfy the clues.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="solo.html">Solo (Sudoku)</a></td>
+        <td>Classic Sudoku-style number puzzle.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="tents.html">Tents</a></td>
+        <td>Place one tent next to each tree.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="towers.html">Towers</a></td>
+        <td>Complete the tower Latin square.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="twiddle.html">Twiddle</a></td>
+        <td>Rotate groups of tiles into order.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="undead.html">Undead</a></td>
+        <td>Place ghosts, vampires and zombies.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="unequal.html">Unequal</a></td>
+        <td>Complete a Latin square with inequality clues.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="unruly.html">Unruly</a></td>
+        <td>Fill black and white cells without runs of three.</td>
+      </tr>
+      <tr>
+        <td class="game"><a href="untangle.html">Untangle</a></td>
+        <td>Move points until no lines cross.</td>
+      </tr>
+  </table>
 </div>
-
-<template id="category_template">
-    <section>
-        <h2>{{NAME}}&hellip;</h2>
-        <!-- <p>{{DESCRIPTION}}</p> -->
-        <ul>
-            {{PUZZLES}}
-        </ul>
-    </section>
-</template>
-
-<template id="all_template">
-    <section>
-        <ul>
-            {{PUZZLES}}
-        </ul>
-    </section>
-</template>
-
-<template id="puzzle_template">
-    <li><a href="{{SLUG}}.html"><img alt="{{NAME}} screenshot" src="img/{{SLUG}}-ibase.png">
-        <h4>{{NAME}}</h4>
-        <p>{{DESCRIPTION}}</p>
-    </a></li>
-</template>
-
-<script src="js/lib/future.js"></script>
-<!--[if lt IE 9]>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<![endif]-->
-<!--[if gte IE 9]><!-->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<!--<![endif]-->
-<script>
-    jQuery(function($) {
-        var isCompatible = window.CSS && CSS.supports("selector(& .foo)")
-            && typeof Array.prototype.at === "function";
-        if (isCompatible) {
-            var $banner = $('#new-version');
-            $banner.find('.close').on('click', function() {
-                $banner.hide();
-            });
-            $banner.show();
-        }
-    });
-</script>
-<script>
-    jQuery('noscript').hide(); // IE8
-    jQuery(function($) {
-        var puzzles = [
-            { slug: 'blackbox', name: 'Blackbox', category: 'Find the hidden', description: 'Find the hidden balls in the box by bouncing laser beams off them.' },
-            { slug: 'bridges', name: 'Bridges', category: 'Connect', description: 'Connect all the islands with a network of bridges.' },
-            { slug: 'cube', name: 'Cube', category: 'Clear the board', description: 'Pick up all the blue squares by rolling the cube over them.' },
-            { slug: 'dominosa', name: 'Dominosa', category: 'Fill the grid', description: 'Tile the rectangle with a full set of dominoes.' },
-            { slug: 'fifteen', name: 'Fifteen', category: 'Sort', description: 'Slide the tiles around to arrange them into order.' },
-            { slug: 'filling', name: 'Filling', category: 'Fill the grid', description: 'Mark every square with the area of its containing region.' },
-            { slug: 'flip', name: 'Flip', category: 'Clear the board', description: 'Flip groups of squares to light them all up at once.' },
-            { slug: 'galaxies', name: 'Galaxies', category: 'Fill the grid', description: 'Divide the grid into rotationally symmetric regions each centered on a dot.' },
-            { slug: 'guess', name: 'Guess', category: 'Find the hidden', description: 'Guess the hidden combination of colors.' },
-            { slug: 'inertia', name: 'Inertia', category: 'Find the path', description: 'Collect all the gems without running into any of the mines.' },
-            { slug: 'keen', name: 'Keen', category: 'Latin square', description: 'Complete the latin square in accordance with the arithmetic clues.' },
-            { slug: 'lightup', name: 'Light Up', category: 'Place', description: 'Place bulbs to light up all the squares.' },
-            { slug: 'loopy', name: 'Loopy', category: 'Find the path', description: 'Draw a single closed loop, given clues about number of adjacent edges.' },
-            { slug: 'magnets', name: 'Magnets', category: 'Fill the grid', description: 'Place magnets to satisfy the clues and avoid like poles touching.' },
-            { slug: 'map', name: 'Map', category: 'Place', description: 'Color the map so that adjacent regions are never the same color.' },
-            { slug: 'mines', name: 'Mines', category: 'Find the hidden', description: 'Find all the mines without treading on any of them.' },
-            { slug: 'net', name: 'Net', category: 'Connect', description: 'Rotate each tile to reassemble the network.' },
-            { slug: 'netslide', name: 'Netslide', category: 'Connect', description: 'Slide a row at a time to reassemble the network.' },
-            { slug: 'pattern', name: 'Pattern', category: 'Fill the grid', description: 'Fill in the pattern in the grid, given only the lengths of runs of black squares.' },
-            { slug: 'pearl', name: 'Pearl', category: 'Find the path', description: 'Draw a single closed loop, given clues about corner and straight squares.' },
-            { slug: 'pegs', name: 'Pegs', category: 'Clear the board', description: 'Jump pegs over each other to remove all but one.' },
-            { slug: 'range', name: 'Range', category: 'Place', description: 'Place black squares to limit the visible distance from each numbered cell.' },
-            { slug: 'rect', name: 'Rect', category: 'Fill the grid', description: 'Divide the grid into rectangles with areas equal to the numbers.' },
-            { slug: 'samegame', name: 'Same Game', category: 'Clear the board', description: 'Clear the grid by removing touching groups of the same color squares.' },
-            { slug: 'signpost', name: 'Signpost', category: 'Find the path', description: 'Connect the squares into a path following the arrows.' },
-            { slug: 'singles', name: 'Singles', category: 'Place', description: 'Black out the right set of duplicate numbers.' },
-            { slug: 'sixteen', name: 'Sixteen', category: 'Sort', description: 'Slide a row at a time to arrange the tiles into order.' },
-            { slug: 'slant', name: 'Slant', category: 'Place', description: 'Draw a maze of slanting lines that matches the clues.' },
-            { slug: 'solo', name: 'Solo', category: 'Latin square', description: 'Fill in the grid so that each row, column and square block contains one of every digit.' },
-            { slug: 'tents', name: 'Tents', category: 'Place', description: 'Place a tent next to each tree.' },
-            { slug: 'towers', name: 'Towers', category: 'Latin square', description: 'Complete the latin square of towers in accordance with the clues.' },
-            { slug: 'twiddle', name: 'Twiddle', category: 'Sort', description: 'Rotate the tiles around themselves to arrange them into order.' },
-            { slug: 'undead', name: 'Undead', category: 'Place', description: 'Place ghosts, vampires and zombies so that the right numbers of them can be seen in mirrors.' },
-            { slug: 'unequal', name: 'Unequal', category: 'Latin square', description: 'Complete the latin square in accordance with the &gt; signs.' },
-            { slug: 'unruly', name: 'Unruly', category: 'Fill the grid', description: 'Fill in the black and white grid to avoid runs of three.' },
-            { slug: 'untangle', name: 'Untangle', category: 'Sort', description: 'Reposition the points so that the lines do not cross.' }
-        ];
-
-        function substitute(str, substitutions) {
-            // Simple {{VARIABLE}} substitution.
-            // We control the input, so not worried about escaping, etc.
-            return str.replace(/{{(\w+)}}/g, function(match, p1) {
-                return substitutions[p1.toLowerCase()] || match;
-            });
-        }
-
-        var categorized = false,
-            puzzleTmpl = $('#puzzle_template').html(),
-            html = "";
-
-        if (categorized) {
-            var categoryTmpl = $('#category_template').html(),
-                categories = {};
-            puzzles.forEach(function(puzzle) {
-                var cat = puzzle.category;
-                categories[cat] = categories[cat] || [];
-                categories[cat].push(puzzle);
-            });
-
-            var categoryNames = Object.keys(categories).sort();
-            categoryNames.forEach(function(categoryName) {
-                var categoryPuzzles = categories[categoryName],
-                    puzzlesHtml = "";
-                categoryPuzzles.forEach(function(puzzle) {
-                    puzzlesHtml += substitute(puzzleTmpl, puzzle);
-                });
-                html += substitute(categoryTmpl, {
-                    'name': categoryName,
-                    'puzzles': puzzlesHtml
-                });
-            });
-        } else {
-            var allTmpl = $('#all_template').html(),
-                puzzlesHtml = "";
-            puzzles.forEach(function(puzzle) {
-                puzzlesHtml += substitute(puzzleTmpl, puzzle);
-            });
-            html += substitute(allTmpl, {
-                'puzzles': puzzlesHtml
-            });
-        }
-
-        $('#puzzle_list').html(html);
-
-    });
-</script>
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b54d0b92e4ac461b856174d2167b86ac"}'></script>
 </body>
+</html>
