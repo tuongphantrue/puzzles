@@ -1,0 +1,20 @@
+PUZZLES GITHUB FIX
+
+Upload/replace only these two files on the MASTER branch:
+
+1. .github/workflows/pages-local.yml
+2. README.md
+
+Then:
+- GitHub repo > Settings > Pages
+- Source: GitHub Actions
+- Actions tab: wait for "Deploy Original Puzzles To My GitHub Pages"
+  to show build ✓ and deploy ✓
+
+Test:
+https://tuongphantrue.github.io/puzzles/_local-build.txt
+https://tuongphantrue.github.io/puzzles/blackbox.html
+
+The workflow does NOT rewrite puzzle JavaScript.
+It automatically checks out the newest historical gh-pages commit that
+does not contain puzzles.twistymaze.com, then deploys that original static site.
